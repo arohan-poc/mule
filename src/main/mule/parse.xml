@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="0d484fc0-75e6-4a31-8e49-a9e9bcc8db4b" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="parseFlow" doc:id="c23c84f0-9d09-4bec-b406-dcfcbc418c7a" >
+		<http:listener doc:name="Listener" doc:id="27c2b69c-91cc-4a54-bc2c-2be2a3b02ebd" config-ref="HTTP_Listener_config" path="/api"/>
+		<http:load-static-resource doc:name="Load static resource" doc:id="269268c4-2e67-4187-975a-4419be8b36a8" defaultFile="home.html" resourceBasePath="D:\works\parse\src\main\resources\home.html"/>
+	</flow>
+	<flow name="parseFlow1" doc:id="9b01685d-0b8f-4e4d-8edd-ed824c79811c" >
+		<http:listener doc:name="Listener" doc:id="8f27e9bb-0315-47f1-a6a0-d1db07be0f82" config-ref="HTTP_Listener_config" path="/thankyou.html"/>
+		<logger level="INFO" doc:name="Logger" doc:id="7c013084-b174-4f31-a89c-880534db78dc" message="---message printed--- name ---#[attributes.queryParams.yourname] --- code--- #[attributes.queryParams.employeecode]"/>
+		<set-variable value="#[attributes.queryParams.yourname]" doc:name="Set Variable" doc:id="9cb12d0f-1301-4485-b5f1-7dac2a70b522" variableName="emp_name"/>
+		<parse-template doc:name="Parse Template" doc:id="48108309-d57f-4d4f-aedf-81ab300a2a75" location="thankyou.html"/>
+	</flow>
+</mule>
